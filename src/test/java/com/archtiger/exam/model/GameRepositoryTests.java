@@ -1,5 +1,7 @@
 package com.archtiger.exam.model;
 
+import com.archtiger.exam.GamePopulator;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -23,17 +24,69 @@ public class GameRepositoryTests {
 
     @Before
     public void populate() {
-        Game g1 = new Game(null, Platform.PS_4, Rating.PG_18, "Activision", "Destiny 2", LocalDateTime.now(), LocalDateTime.now());
-        Game g2 = new Game(null, Platform.XBOX_ONE, Rating.PG_18, "Activision", "Destiny 2", LocalDateTime.now(), LocalDateTime.now());
-        Game g3 = new Game(null, Platform.SWITCH, Rating.PG_18, "Nintendo", "Super Mario", LocalDateTime.now(), LocalDateTime.now());
-        Game g4 = new Game(null, Platform.PS_4, Rating.PG_12, "Sony", "Horizon Zero Dawn", LocalDateTime.now(), LocalDateTime.now());
-        gameRepository.saveAll(Arrays.asList(g1, g2, g3, g4));
+        gameRepository.saveAll(GamePopulator.populate());
+    }
+
+    @After
+    public void cleanUp() {
+        gameRepository.deleteAll();
     }
 
     @Test
-    public void findAllByPlatformEqualsOrderByReleaseDateTimeDesc() {
-        List<Game> results = gameRepository.findAllByPlatformEqualsOrderByReleaseDateTimeDesc(Platform.PS_4);
+    public void findAllByPlatformEqualsOrderByReleaseDateTimeDesc_ExpectMultipleItems() {
+        List<Game> results = gameRepository.findAllByPlatformEqualsOrderByReleaseDateDesc(Platform.PS_4);
         Assert.assertTrue(results.size() == 2);
+        results.forEach(i -> System.out.println(i.toString()));
+    }
+
+    @Test
+    public void findAllByPlatformEqualsOrderByReleaseDateTimeDesc_ExpectOneItem() {
+        List<Game> results = gameRepository.findAllByPlatformEqualsOrderByReleaseDateDesc(Platform.SWITCH);
+        Assert.assertTrue(results.size() == 1);
+        results.forEach(i -> System.out.println(i.toString()));
+    }
+
+    @Test
+    public void findAllByPlatformEqualsOrderByReleaseDateTimeDesc_ExpectNoItem() {
+        List<Game> results = gameRepository.findAllByPlatformEqualsOrderByReleaseDateDesc(Platform.PC);
+        Assert.assertTrue(results.size() == 0);
+    }
+
+    @Test
+    public void findAllByTitleOrderByReleaseDateTimeDesc_ExpectMultipleResults() {
+        List<Game> results = gameRepository.findAllByTitleOrderByReleaseDateDesc("Destiny 2");
+        Assert.assertTrue(results.size() == 2);
+        results.forEach(i -> System.out.println(i.toString()));
+    }
+
+    @Test
+    public void findAllByTitleOrderByReleaseDateTimeDesc_ExpectOneResult() {
+        List<Game> results = gameRepository.findAllByTitleOrderByReleaseDateDesc("Super Mario");
+        Assert.assertTrue(results.size() == 1);
+        results.forEach(i -> System.out.println(i.toString()));
+    }
+
+    @Test
+    public void findAllByTitleOrderByReleaseDateTimeDesc_ExpectNoItem() {
+        List<Game> results = gameRepository.findAllByTitleOrderByReleaseDateDesc("Wonder Boy");
+        Assert.assertTrue(results.size() == 0);
+    }
+
+    @Test
+    public void findAllByReleaseDateBetweenOrderByReleaseDateDesc_ExpectMultipleItems() {
+        LocalDate start = LocalDate.now().minusYears(2);
+        LocalDate end = LocalDate.now();
+        List<Game> results = gameRepository.findAllByReleaseDateBetweenOrderByReleaseDateDesc(start, end);
+        Assert.assertTrue(results.size() == 4);
+        results.forEach(i -> System.out.println(i.toString()));
+    }
+
+    @Test
+    public void findAllByReleaseDateBetweenOrderByReleaseDateDesc_ExpectOneItem() {
+        LocalDate start = LocalDate.now().minusWeeks(2);
+        LocalDate end = LocalDate.now();
+        List<Game> results = gameRepository.findAllByReleaseDateBetweenOrderByReleaseDateDesc(start, end);
+        Assert.assertTrue(results.size() == 1);
         results.forEach(i -> System.out.println(i.toString()));
     }
 

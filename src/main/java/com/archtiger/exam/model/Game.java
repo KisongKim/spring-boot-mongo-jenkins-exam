@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -40,8 +41,8 @@ public class Game {
     @Column(name = "TITLE", length = 256, nullable = false, updatable = false)
     private String title;
 
-    @Column(name = "RELEASE_DATE_TIME", nullable = false, updatable = false)
-    private LocalDateTime releaseDateTime;
+    @Column(name = "RELEASE_DATE", nullable = false, updatable = false)
+    private LocalDate releaseDate;
 
     @Column(name = "REGISTER_DATE_TIME", nullable = false, updatable = false)
     private LocalDateTime registerDateTime;
