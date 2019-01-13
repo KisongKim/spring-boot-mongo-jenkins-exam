@@ -5,7 +5,6 @@ import com.archtiger.exam.contract.GameInformation;
 import com.archtiger.exam.contract.ListingGamesResponse;
 import com.archtiger.exam.model.Game;
 import com.archtiger.exam.model.Platform;
-import com.archtiger.exam.model.Rating;
 import com.archtiger.exam.service.GameInformationService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -24,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,6 +78,45 @@ public class GameControllerWebMvcTests {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.games[0].platform", Matchers.is("PS_4")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.games[1].platform", Matchers.is("PS_4")));
+    }
+
+    @Test
+    public void listingGames_ByTitle() throws Exception {
+        ListingGamesResponse response = populate(null, "Super Mario", null, null);
+        Mockito.when(gameInformationService.listingGames(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(response);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/games").param("title", "Super Mario");
+        mvc.perform(builder).andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.games", Matchers.hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.games[0].title", Matchers.is("Super Mario")));
+    }
+
+    @Test
+    public void listingGames_ByReleaseDate() throws Exception {
+        LocalDate end = LocalDate.now();
+        LocalDate start = end.minusMonths(3);
+        ListingGamesResponse response = populate(null, null, start, end);
+        Mockito.when(gameInformationService.listingGames(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(response);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/games")
+                .param("start", start.format(dateTimeFormatter))
+                .param("end", end.format(dateTimeFormatter));
+        mvc.perform(builder).andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.games", Matchers.hasSize(2)));
+    }
+
+    @Test
+    public void listingGames_ExpectNoResults() throws Exception {
+        ListingGamesResponse response = populate(Platform.PC, null, null, null);
+        Mockito.when(gameInformationService.listingGames(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(response);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/games").param("platform", "PC");
+        mvc.perform(builder).andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.games", Matchers.hasSize(0)));
     }
 
 }
