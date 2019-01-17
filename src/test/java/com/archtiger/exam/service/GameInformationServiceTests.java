@@ -7,7 +7,6 @@ import com.archtiger.exam.contract.ListingGamesResponse;
 import com.archtiger.exam.model.Game;
 import com.archtiger.exam.model.GameRepository;
 import com.archtiger.exam.model.Platform;
-import com.archtiger.exam.model.Rating;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

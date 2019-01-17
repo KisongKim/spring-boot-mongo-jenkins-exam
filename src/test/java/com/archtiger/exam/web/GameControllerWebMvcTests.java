@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -101,6 +102,7 @@ public class GameControllerWebMvcTests {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/games")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
                 .param("start", start.format(dateTimeFormatter))
                 .param("end", end.format(dateTimeFormatter));
         mvc.perform(builder).andExpect(MockMvcResultMatchers.status().isOk())
@@ -113,7 +115,8 @@ public class GameControllerWebMvcTests {
         ListingGamesResponse response = populate(Platform.PC, null, null, null);
         Mockito.when(gameInformationService.listingGames(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(response);
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/games").param("platform", "PC");
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/games")
+                .param("platform", "PC");
         mvc.perform(builder).andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.games", Matchers.hasSize(0)));

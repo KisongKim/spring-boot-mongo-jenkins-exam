@@ -9,7 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -25,7 +24,6 @@ public class GameController {
     }
 
     @GetMapping(path = "/games")
-    @ResponseBody
     public ListingGamesResponse listingGames(@Nullable @RequestParam Platform platform,
                                              @Nullable @RequestParam String title,
                                              @Nullable @DateTimeFormat(pattern = "yyyy-MM-dd")

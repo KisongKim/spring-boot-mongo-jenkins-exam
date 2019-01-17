@@ -2,10 +2,12 @@ package com.archtiger.exam.contract;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @JsonAutoDetect
 public class ListingGamesResponse {
 
