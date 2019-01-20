@@ -1,5 +1,7 @@
 package com.archtiger.exam.model;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,10 +11,12 @@ import java.util.List;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
-    List<Game> findAllByPlatformEqualsOrderByReleaseDateDesc(final Platform platform);
+    Page<Game> findAllByReleaseDateBetween(final LocalDate start, final LocalDate end, Pageable pageable);
 
-    List<Game> findAllByTitleOrderByReleaseDateDesc(final String title);
+    Page<Game> findAllByPlatform(Platform platform, Pageable pageable);
 
-    List<Game> findAllByReleaseDateBetweenOrderByReleaseDateDesc(final LocalDate start, final LocalDate end);
+    Page<Game> findAllByTitle(String title, Pageable pageable);
+
+    Page<Game> findAllByPlatformAndTitle(Platform platform, String title, Pageable pageable);
 
 }

@@ -8,6 +8,7 @@ public enum Platform {
 
     SWITCH,
 
-    PC;
+    PC,
 
+    ALL;
 }
