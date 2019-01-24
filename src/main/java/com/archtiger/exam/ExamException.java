@@ -4,6 +4,11 @@ public class ExamException extends RuntimeException {
 
     private final ExamError examError;
 
+    public ExamException(ExamError examError) {
+        super(examError.getDescription());
+        this.examError = examError;
+    }
+
     public ExamException(ExamError examError, String message) {
         super(message);
         this.examError = examError;

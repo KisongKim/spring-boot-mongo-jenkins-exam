@@ -1,15 +1,15 @@
 package com.archtiger.exam.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Repository
-public class GameInventoryRepositoryImpl implements GameInventoryRepositoryCustom {
+public class GameInventoryRepositoryCustomImpl implements GameInventoryRepositoryCustom {
 
-    @Autowired
-    EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public void detach(GameInventory inventory) {

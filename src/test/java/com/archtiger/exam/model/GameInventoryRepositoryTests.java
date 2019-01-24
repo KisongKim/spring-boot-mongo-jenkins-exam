@@ -57,4 +57,16 @@ public class GameInventoryRepositoryTests {
         Assert.assertEquals(inventory, optionalFound.get());
     }
 
+    @Test
+    public void save_AsUpdate() {
+        GameInventory entity = populate();
+        entity = gameInventoryRepository.saveAndFlush(entity);
+
+        entity.setStock(10);
+        entity.setUpdateDateTime(LocalDateTime.now());
+        GameInventory updated = gameInventoryRepository.save(entity);
+
+        Assert.assertTrue(updated.getStock() == 10);
+    }
+
 }
