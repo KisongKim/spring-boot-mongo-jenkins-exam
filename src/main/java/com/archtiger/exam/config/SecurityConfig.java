@@ -17,7 +17,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/games*", "/games/**", "/inventory*", "/inventory/**").anonymous();
+                .antMatchers("/games*", "/games/**", "/inventory*", "/inventory/**").anonymous()
+                .antMatchers("/customer*", "/customer/**").anonymous();
     }
 
     @Override

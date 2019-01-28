@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class GameInventory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false, updatable = false)
     private Long Id;
 

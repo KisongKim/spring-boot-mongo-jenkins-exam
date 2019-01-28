@@ -19,8 +19,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
@@ -41,12 +39,6 @@ public class GameInventoryControllerIntegrationTests {
     @LocalServerPort
     private int port;
 
-    private static MultiValueMap<String, String> headers() {
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("Content-Type", "application/json");
-        return headers;
-    }
-
     @Autowired
     public GameInventoryControllerIntegrationTests() {
         // To test 'PATCH' we have to use apache http client
@@ -58,7 +50,7 @@ public class GameInventoryControllerIntegrationTests {
     @Test
     public void updateInventoryStockCount_expect200() {
         UpdateProductStockCountRequest request = new UpdateProductStockCountRequest(10, 5);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(request, headers());
+        HttpEntity<Object> requestEntity = new HttpEntity<>(request, ControllerTestUtils.headers(false));
 
         ResponseEntity<UpdateProductStockCountResponse> responseEntity = restTemplate.exchange(
                 "http://localhost:" + port + "/exam/inventory/{id}",
@@ -73,8 +65,7 @@ public class GameInventoryControllerIntegrationTests {
     @Test
     public void updateInventoryStockCount_expect400_causeNumberFormatException() {
         UpdateProductStockCountRequest request = new UpdateProductStockCountRequest(10, 5);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(request, headers());
-
+        HttpEntity<Object> requestEntity = new HttpEntity<>(request, ControllerTestUtils.headers(false));
         try {
             restTemplate.exchange(
                     "http://localhost:" + port + "/exam/inventory/{id}",
@@ -92,7 +83,7 @@ public class GameInventoryControllerIntegrationTests {
     @Test
     public void updateInventoryStockCount_expect400_causeValidationFailedForArgument() {
         UpdateProductStockCountRequest request = new UpdateProductStockCountRequest(10, -1);
-        HttpEntity<Object> requestEntity = new HttpEntity<>(request, headers());
+        HttpEntity<Object> requestEntity = new HttpEntity<>(request, ControllerTestUtils.headers(false));
         try {
             restTemplate.exchange(
                     "http://localhost:" + port + "/exam/inventory/{id}",

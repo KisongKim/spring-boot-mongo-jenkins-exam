@@ -18,11 +18,14 @@ public class CustomerRegisterResponse {
     @JsonProperty(required = true)
     private String email;
 
+    @JsonProperty(required = true)
     private String familyName;
 
+    @JsonProperty(required = true)
     private String givenName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH::mm:ss", timezone = "Europe/Berlin")
+    @JsonProperty(required = true)
     private LocalDateTime registerDateTime;
 
 }
