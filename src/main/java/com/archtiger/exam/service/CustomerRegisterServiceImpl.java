@@ -36,8 +36,8 @@ public class CustomerRegisterServiceImpl implements CustomerRegisterService {
         // 1. check the email already taken by other customer, if yes throw a exception
         Optional<Customer> found = customerRepository.findByEmail(request.getEmail());
         if (found.isPresent()) {
-             log.error("[register] Email already taken by another user.");
-             throw new ExamException(ExamError.EMAIL_ALREADY_EXIST);
+            log.error("[register] Email already taken by another user.");
+            throw new ExamException(ExamError.EMAIL_ALREADY_EXIST);
         }
 
         // 2. encode password then persist.

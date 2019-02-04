@@ -1,11 +1,13 @@
 package com.archtiger.exam.web;
 
 import com.archtiger.exam.ExamException;
+import com.archtiger.exam.contract.AllCustomersResponse;
 import com.archtiger.exam.contract.CustomerRegisterRequest;
 import com.archtiger.exam.contract.CustomerRegisterResponse;
 import com.archtiger.exam.contract.CustomerSearchResultResponse;
 import com.archtiger.exam.service.CustomerRegisterService;
 import com.archtiger.exam.service.CustomerSearchService;
+import com.archtiger.exam.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +27,15 @@ public class CustomerController {
 
     private CustomerSearchService customerSearchService;
 
+    private CustomerService customerService;
+
     @Autowired
     public CustomerController(CustomerRegisterService customerRegisterService,
-                              CustomerSearchService customerSearchService) {
+                              CustomerSearchService customerSearchService,
+                              CustomerService customerService) {
         this.customerRegisterService = customerRegisterService;
         this.customerSearchService = customerSearchService;
+        this.customerService = customerService;
     }
 
     @PostMapping(path = "customer")
@@ -42,6 +48,11 @@ public class CustomerController {
     @GetMapping(path = "customer/filter")
     public CustomerSearchResultResponse searchCustomer(@Email @RequestParam String email) throws ExamException {
         return customerSearchService.searchCustomerByEmail(email);
+    }
+
+    @GetMapping(path = "api/customer")
+    public AllCustomersResponse all() throws ExamException {
+        return customerService.all();
     }
 
 }

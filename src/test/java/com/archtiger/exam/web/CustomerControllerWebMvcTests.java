@@ -4,6 +4,7 @@ import com.archtiger.exam.contract.CustomerRegisterRequest;
 import com.archtiger.exam.contract.CustomerRegisterResponse;
 import com.archtiger.exam.service.CustomerRegisterService;
 import com.archtiger.exam.service.CustomerSearchService;
+import com.archtiger.exam.service.CustomerService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(CustomerController.class)
+@WebMvcTest(value = CustomerController.class, secure = false)
 public class CustomerControllerWebMvcTests {
 
     @Autowired
@@ -36,10 +37,14 @@ public class CustomerControllerWebMvcTests {
     @MockBean
     private CustomerSearchService customerSearchService;
 
+    @MockBean
+    private CustomerService customerService;
+
     @Before
     public void setUp() {
         this.mvc = MockMvcBuilders.standaloneSetup(new CustomerController(customerRegisterService,
-                customerSearchService)).build();
+                customerSearchService,
+                customerService)).build();
     }
 
     public static CustomerRegisterRequest customerRegisterRequest(String email,

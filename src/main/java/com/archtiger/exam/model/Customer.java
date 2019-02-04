@@ -40,8 +40,8 @@ public class Customer {
     @Column(name = "EMAIL", length = 256, nullable = false, unique = true, updatable = false)
     private String email;
 
-    @Column(name = "PASSWORD", length = 64, nullable = false)
-    private String password;
+    @Column(name = "CUSTOMER_SECRET", length = 256, nullable = false)
+    private String customerSecret;
 
     @Column(name = "FAMILY_NAME", length = 64, nullable = false)
     private String familyName;
@@ -58,9 +58,9 @@ public class Customer {
     @JoinColumn(name = "CUSTOMER_ID")
     private Set<DeliveryAddress> deliveryAddresses;
 
-    public Customer(String email, String password, String familyName, String givenName, LocalDateTime registerDateTime) {
+    public Customer(String email, String customerSecret, String familyName, String givenName, LocalDateTime registerDateTime) {
         this.email = email;
-        this.password = password;
+        this.customerSecret = customerSecret;
         this.familyName = familyName;
         this.givenName = givenName;
         this.registerDateTime = registerDateTime;

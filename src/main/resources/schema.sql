@@ -116,38 +116,3 @@ create table if not exists ClientDetails
   additionalInformation  VARCHAR(4096),
   autoApproveScopes      VARCHAR(256)
 );
-
--- GAME
-insert into GAME(ID, PLATFORM, RATING, PUBLISHER, TITLE, RELEASE_DATE, REGISTER_DATE_TIME)
-values (default, 'PS_4', 'PG_18', 'Activision', 'Destiny 2', current_date(), current_timestamp());
-insert into GAME(ID, PLATFORM, RATING, PUBLISHER, TITLE, RELEASE_DATE, REGISTER_DATE_TIME)
-values (default, 'XBOX_ONE', 'PG_18', 'Activision', 'Destiny 2', current_date(), current_timestamp());
-insert into GAME(ID, PLATFORM, RATING, PUBLISHER, TITLE, RELEASE_DATE, REGISTER_DATE_TIME)
-values (default, 'SWITCH', 'PG_18', 'Nintendo', 'Super Mario', current_date(), current_timestamp());
-insert into GAME(ID, PLATFORM, RATING, PUBLISHER, TITLE, RELEASE_DATE, REGISTER_DATE_TIME)
-values (default, 'PS_4', 'PG_12', 'Sony', 'Horizon Zero Dawn', current_date(), current_timestamp());
-
--- GAME_INVENTORY
-insert into GAME_INVENTORY(ID, GAME_ID, STOCK, VERSION, UPDATE_DATE_TIME, REGISTER_DATE_TIME)
-values (default, 1, 10, 1, current_timestamp(), current_timestamp());
-insert into GAME_INVENTORY(ID, GAME_ID, STOCK, VERSION, UPDATE_DATE_TIME, REGISTER_DATE_TIME)
-values (default, 2, 20, 1, current_timestamp(), current_timestamp());
-
--- CUSTOMER bruce@test.com:password
-insert into CUSTOMER(ID, EMAIL, CUSTOMER_SECRET, FAMILY_NAME, GIVEN_NAME, REGISTER_DATE_TIME)
-values (default, 'bruce@test.com', '$2a$11$sTdm0YUj5VlXae9dHD7L0OM5kghMrDDe5KRqvckX9N2ss2NkpdqIW', 'bruce', 'wayne', current_timestamp());
-
--- DELIVERY_ADDRESS
-insert into DELIVERY_ADDRESS(ID, CUSTOMER_ID, CITY, STREET, POSTAL_CODE, FAVORITE, REGISTER_DATE_TIME)
-values (default, (select ID from CUSTOMER where EMAIL = 'bruce@test.com'), 'Frankfurt', 'Street 1', '62759', true,
-        current_timestamp());
-insert into DELIVERY_ADDRESS(ID, CUSTOMER_ID, CITY, STREET, POSTAL_CODE, FAVORITE, REGISTER_DATE_TIME)
-values (default, (select ID from CUSTOMER where EMAIL = 'bruce@test.com'), 'Berlin', 'Street A', '72759', true,
-        current_timestamp());
-
--- OAUTH_CLIENT_DETAILS
--- OAuth2 Client Credential Grant foo:bar
-insert into oauth_client_details (client_id,client_secret,scope,authorized_grant_types,web_server_redirect_uri,
-                                  authorities,access_token_validity,refresh_token_validity,additional_information,autoapprove)
-values ('foo','$2a$11$1MIc/9cXCICP0LaPgYaJZ.MFNo/LYTclJtNVizLFQ.lQ.B9t0V2YK','read,write',
-        'password,authorization_code,refresh_token,client_credentials,implicit',null,null,36000,36000,null,true);

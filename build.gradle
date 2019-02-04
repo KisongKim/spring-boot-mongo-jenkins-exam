@@ -30,6 +30,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-json'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.h2database:h2'
+    compile(group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.4.RELEASE') {
+        exclude(module: 'jackson-mapper-asl') // We already have a more recent jackson via Spring Boot
+    }
+    // java 11 does not come with jaxb: spring.oauth2 required
+    compile('javax.xml.bind:jaxb-api:2.3.0')
+    compile('javax.activation:activation:1.1')
+    compile('org.glassfish.jaxb:jaxb-runtime:2.3.0')
+
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     compileOnly 'org.projectlombok:lombok'
     compile('org.apache.httpcomponents:httpclient:4.5.6')

@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(GameController.class)
+@WebMvcTest(value = GameController.class, secure = false)
 public class GameControllerWebMvcTests {
 
     @Autowired

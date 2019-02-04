@@ -25,7 +25,7 @@ public class GameServiceImpl implements GameService {
 
     private GameRepository gameRepository;
 
-    private static final Logger logger= LoggerFactory.getLogger(GameServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
 
     @Autowired
     public GameServiceImpl(GameRepository gameRepository) {
@@ -54,7 +54,7 @@ public class GameServiceImpl implements GameService {
     @Transactional(readOnly = true)
     public PagedGamesResponse getGamesByReleaseDate(final LocalDate start,
                                                     final LocalDate end,
-                                                    final int page,final int limit,
+                                                    final int page, final int limit,
                                                     final String sort) throws ExamException {
         if (start.isAfter(end)) {
             logger.error("[getGamesByReleaseDate] Start date must be earlier than end date.");
